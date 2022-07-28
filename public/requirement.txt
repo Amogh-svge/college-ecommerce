@@ -1,0 +1,79 @@
+category{
+    name,
+    description,
+    slug->unique,
+    parent_id, 0-parent/ 1- child
+}
+accesories - 1,parent - 0
+mobile accesories -2 ,parent - 1,
+phone cases-3,parent - 2,
+
+sub-category{
+    name,
+    description,
+    slug->unique,
+    category_id,
+}
+
+product{
+    prod_name,
+    prod_description,
+    slug,
+    image,
+    price,
+    old_price,
+    category_id,
+    quantity,
+    brand,
+    seller_id,
+}
+
+rating {
+    title,
+    review,
+    rating_no,
+}
+
+order{
+    order-details,
+    products-list,
+    user,
+    amount,
+    order-date,
+    order-status,
+    shipping information,
+}
+
+Cart{
+
+}
+
+Search{
+
+}
+
+Login Page{
+    seller,
+    user,
+    Admin,
+}
+
+Remarks:
+Customer should be updated after 
+Send email to seller after order is placed by seller
+Send email to respective buyer after order is placed by seller
+
+
+task :
+storePostRequest
+
+Rameshprasad123@gmail.com
+password: ramesh123
+
+Anilsapkota@gmail.com
+password: anilsapkota
+
+connect to mobile = php artisan serve --host 192.168.17.118 --port 80
+
+Note: while doing migrations delete upto add_categories_image then migrate and restore
+
