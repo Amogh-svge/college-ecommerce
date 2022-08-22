@@ -36,5 +36,6 @@ class AuthServiceProvider extends ServiceProvider
         //short-syntax of above ,here fn = function
         Gate::define('product-action', fn (User $user, Product $product) => ($user->id === $product->users_id  || Auth::user()->role_id == Role::$SUPER_ADMIN));
         Gate::define('super_admin-action', fn (User $user) => ($user->role_id == Role::$SUPER_ADMIN));
+        Gate::define('create-action', fn (User $user) => ($user->role_id == Role::$SUPER_ADMIN || $user->role_id == Role::$VENDOR));
     }
 }

@@ -24,49 +24,52 @@
         </div>
         <div class="block">
             <div class="container">
+                @foreach ($orders as $key => $item)
                     <div class="card shadow mb-4">
                         <!-- Card Header - Accordion -->
-                        <a href="#collapseCardExample"
-                        style="background: rgb(140, 231, 155);"
-                            class="d-flex justify-content-xl-between card-header py-3 " 
-                            data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                            <h6 class="m-0 font-weight-bold text-dark"> #1</h6>
-                            <h6 class="m-0 font-weight-bold text-dark"> User-id: 2</h6>
-                            <h6 class="m-0 font-weight-bold text-dark"> 2057/08/22</h6>
-                            <h6 class="m-0 font-weight-bold text-dark">Status: Not Delivered
+                        <a href="#collapseCardExample{{ $key }}" style="background: #979695d7"
+                            class="d-flex justify-content-xl-between card-header py-3 " data-toggle="collapse"
+                            role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                            <h6 class=" font-weight-bold text-dark card_size_reducer"> #{{ $key + 1 }}</h6>
+                            <h6 class=" font-weight-bold text-dark card_size_reducer"> Order_Date:
+                                {{ Carbon::parse($item->created_at)->isoFormat('LL') }}</h6>
+                            <h6 class=" font-weight-bold text-dark card_size_reducer">Status: Not Delivered
                             </h6>
-                            <h6 class="m-0 font-weight-bold text-dark">Total: Rs. 2500
+
+                            <h6 class=" font-weight-bold text-dark card_size_reducer">Total: Rs. {{ $item->total_price }}
                             </h6>
                         </a>
                         <!-- Card Content - Collapse -->
-                        <div class="collapse " id="collapseCardExample">
+                        <div class="collapse " id="collapseCardExample{{ $key }}">
                             <div class="card-body">
                                 <table class="table table-bordered">
-                                        <thead>
-                                            <th>Product Name</th>
-                                            <th>Quantity</th>
-                                            <th>Price</th>
-                                        </thead>
+                                    <thead>
+                                        <th>S.N.</th>
+                                        <th>Product Name</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                    </thead>
+                                    @foreach ($item->orderItem as $key => $items)
                                         <tr>
-                                            <td>stroyka</td>
-                                            <td>quantity: 2</td>
-                                            <td>Rs. 2500</td>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $items->product->prod_name }}</td>
+                                            <td>quantity: {{ $items->quantity }}</td>
+                                            <td>Rs. {{ $items->product_price }}</td>
                                         </tr>
+                                    @endforeach
+
+
                                 </table>
                             </div>
                         </div>
                     </div>
+                @endforeach
 
-                    {{-- @foreach ($orders as $order)
-                                @foreach ($order->orderItem as $item)
-                                    <td class="">
-                                        <li> <a href="#"
-                                                class="wishlist__product-name">{{ $item->product->prod_name }}</a></li>
-                                    </td>
-                                @endforeach
-                        @endforeach --}}
-
-                </table>
+                @if (count($orders) == 0)
+                    <div class="alert alert-dark" role="alert">
+                        No Order History
+                    </div>
+                @endif
             </div>
         </div>
 

@@ -54,8 +54,7 @@
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->roles->role }}</td>
                                     <td> {{ Carbon::parse($item->created_at)->isoFormat('LL') }}</td>
-                                    <td><a href={{ route('roles.edit', [$item->id]) }}><i
-                                                class="fas fa-edit mr-1"></i></a>
+                                    <td><a href={{ route('roles.edit', [$item->id]) }}><i class="fas fa-edit mr-1"></i></a>
                                     </td>
                                     <td>
                                         <form action={{ route('delete_user', $item->id) }} method="POST">
@@ -64,7 +63,8 @@
                                             {{-- <button type="submit" class="btn btn-light btn-sm btn-svg-icon">
                                                 <i class="fas fa-trash ml-1"></i>
                                             </button> --}}
-                                            <a onclick="event.preventDefault(); this.closest('form').submit();"
+                                            <a onclick="event.preventDefault(); 
+                                            window.confirm('Do you want to delete?')===true && this.closest('form').submit(); "
                                                 href={{ route('delete_user', $item->id) }}><i
                                                     class="fas fa-trash ml-1"></i></a>
                                         </form>
@@ -79,8 +79,8 @@
                                         @break
 
                                         @default
-                                            <td><a href={{ route('roles_accepted', $item->id) }}><i
-                                                        class="fas fa-check fa-lg mr-2" style="color:rgb(49, 197, 49);"></i></a>|<a
+                                            <td><a href={{ route('roles_accepted', $item->id) }}><i class="fas fa-check fa-lg mr-2"
+                                                        style="color:rgb(49, 197, 49);"></i></a>|<a
                                                     href={{ route('roles_rejected', $item->id) }}><i
                                                         class="fas fa-times fa-lg ml-2" style="color:red;"></i></a></td>
                                     @endswitch

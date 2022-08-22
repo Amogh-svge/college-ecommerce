@@ -38,7 +38,7 @@
                 <div class="widget-products__list">
                     @foreach ($LatestProducts as $item)
                         <div class="widget-products__item">
-                            <div class="widget-products__image"><a href="product.html"><img
+                            <div class="widget-products__image"><a href="/products/{{ $item->id }}"><img
                                         src="{{ asset('storage/images/' . $item->image) }}" alt="no-image"></a></div>
                             <div class="widget-products__info">
                                 <div class="widget-products__name"><a

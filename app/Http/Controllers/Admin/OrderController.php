@@ -24,8 +24,7 @@ class OrderController extends Controller
             ->select('orders.*', 'users.name', 'users.email', 'order_Items.*', 'product.prod_name', 'product.category_id', 'product.users_id')
             ->where(['users_id' => Auth::id(), 'vendor_status' => 'not_approved', 'order_status' => 'purchased'])->orderBy('order_id')
             ->get();
-
-
+        
         return view('Admin.order.order_status', compact(['pending_orders']));
     }
 

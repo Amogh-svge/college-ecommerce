@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/roles-list', 'assignRole')->name('dashboard_roles');
         Route::get('/admin/roles-accepted/{user_id}', 'role_Accepted')->name('roles_accepted');
         Route::get('/admin/roles-rejected/{user_id}', 'role_Rejected')->name('roles_rejected');
+        Route::get('/admin/dummy', 'dummy')->name('dummy');
         Route::delete('/admin/delete-user/{user_id}', 'delete_User')->name('delete_user');
     });
 

@@ -59,7 +59,8 @@
                                         <form action="{{ route('categories.destroy', $item->id) }}" method="post">
                                             @csrf
                                             @method('delete')
-                                            <a onclick="event.preventDefault(); this.closest('form').submit(); confirm('Do you want to delete?'); "
+                                            <a onclick="event.preventDefault();
+                                             window.confirm('Do you want to delete?')===true && this.closest('form').submit(); "
                                                 href="#" type="submit"><i class="fas fa-trash ml-1"></i></a>
                                         </form>
                                     </td>

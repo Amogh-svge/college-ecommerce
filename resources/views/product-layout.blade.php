@@ -100,12 +100,7 @@ $allCategories = Categories::where('parent_id', '0')->get(); // retrieve all Cat
                     </li>
                     <li class="mobile-links__item" data-collapse-item>
                         <div class="mobile-links__item-title">
-                            <a href="/categories" class="mobile-links__item-link">Categories</a>
-                        </div>
-                    </li>
-                    <li class="mobile-links__item" data-collapse-item>
-                        <div class="mobile-links__item-title">
-                            <a href="shop-grid-3-columns-sidebar.html" class="mobile-links__item-link">Shop</a>
+                            <a href="/shop" class="mobile-links__item-link">Shop</a>
                         </div>
                     </li>
                     <li class="mobile-links__item" data-collapse-item>
@@ -116,6 +111,11 @@ $allCategories = Categories::where('parent_id', '0')->get(); // retrieve all Cat
                     <li class="mobile-links__item" data-collapse-item>
                         <div class="mobile-links__item-title">
                             <a href="/contact-us" class="mobile-links__item-link">Contact Us</a>
+                        </div>
+                    </li>
+                    <li class="mobile-links__item" data-collapse-item>
+                        <div class="mobile-links__item-title">
+                            <a href="/statement" class="mobile-links__item-link">Statements</a>
                         </div>
                     </li>
                 </ul>
@@ -201,10 +201,44 @@ $allCategories = Categories::where('parent_id', '0')->get(); // retrieve all Cat
                                     </div>
                                 @endif
                                 <div class="indicator indicator--mobile">
-                                    <a href={{ route('login') }} class="indicator__button"><span
-                                            class="indicator__area"><i class="fas fa-user-circle fa-lg mr-1"
-                                                width="25px"
-                                                height="25px"></i>{{ Auth::user() ? Auth::user()->name : 'Login' }}</span></a>
+                                    @if (Auth::check())
+                                        <a class="nav-link dropdown-toggle indicator__button" href="#"
+                                            id="userDropdown" role="button" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-user-circle fa-lg ml-2" width="25px"
+                                                height="25px"></i>
+                                        </a>
+                                        <div class="bg-light dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                            aria-labelledby="userDropdown">
+                                            <a class="dropdown-item" href="#">
+                                                <i class="fas fa-user-circle  fa-fw mr-2 text-gray-400"></i>
+                                                {{ Auth::user()->name }}
+                                            </a>
+
+                                            @if (Auth::user()->role_id == '1' || (Auth::user()->role_id == '3' && Auth::check()))
+                                                <a class="dropdown-item" href={{ route('dashboard') }}>
+                                                    <i class="fas fa-user fa-fw mr-2 text-gray-400"></i>
+                                                    Dashboard
+                                                </a>
+
+                                                <div class="dropdown-divider"></div>
+                                            @endif
+                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                                data-target="#logoutModal">
+                                                <i class="fas fa-sign-out-alt  fa-fw mr-2 text-gray-400"></i>
+                                                Logout
+                                            </a>
+                                        </div>
+                                    @else
+                                        <div class="indicator indicator--mobile">
+
+                                            <a href={{ route('login') }} class="indicator__button"> <i
+                                                    class="fas fa-user-circle fa-lg mr-2" width="25px"
+                                                    height="25px"></i>Login</a>
+                                        </div>
+
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
@@ -254,9 +288,9 @@ $allCategories = Categories::where('parent_id', '0')->get(); // retrieve all Cat
                             </div>
                         @else
                             <div class="indicator ">
-                                <a href={{route('statement')}} class="site-header__register"><span class="indicator__area"> <img
-                                            src="/images/statement.png" width="32px" height="27px"
-                                            alt="">&nbsp;Statement</span></a>
+                                <a href={{ route('statement') }} class="site-header__register"><span
+                                        class="indicator__area"> <img src="/images/statement.png" width="32px"
+                                            height="27px" alt="">&nbsp;Statement</span></a>
                             </div>
                         @endif
                     </div>
@@ -431,9 +465,8 @@ $allCategories = Categories::where('parent_id', '0')->get(); // retrieve all Cat
                                                     </a>
                                                 </div>
                                             @else
-                                                <a href={{ route('login') }}> <i
-                                                        class="fas fa-user-circle fa-lg mr-1" width="25px"
-                                                        height="25px"></i>Login</a>
+                                                <a href={{ route('login') }}> <i class="fas fa-user-circle fa-lg mr-1"
+                                                        width="25px" height="25px"></i>Login</a>
                                             @endif
                                         </div>
                                     </div>

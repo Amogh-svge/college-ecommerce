@@ -1,5 +1,19 @@
 @php
-    use App\Models\Role;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Order;
+use Carbon\Carbon;
+
+if (Auth::user()->role_id == Role::$SUPER_ADMIN) {
+    $admin_req = User::where('role_checker', Role::$role_vendor)->get();
+    $admin_req_first = User::where('role_checker', Role::$role_vendor)->first();
+}
+
+if (Auth::user()->role_id == Role::$VENDOR) {
+    $admin_req = Order::where('order_status', 'purchased')->get();
+    $admin_req_first = Order::where('order_status', 'purchased')->first();
+}
+
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -24,10 +38,11 @@
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/toast.css">
 
 </head>
 
-<body id="page-top">    
+<body id="page-top">
     @if (Auth::user()->role_id == Role::$SUPER_ADMIN || (Auth::user()->role_id == Role::$VENDOR && Auth::check()))
         <!-- Page Wrapper -->
         <div id="wrapper">
@@ -83,123 +98,67 @@
 
                             <!-- Nav Item - Alerts -->
                             <li class="nav-item dropdown no-arrow mx-1">
+                                @php
+                                    $no_admin_req = count($admin_req) - 1;
+                                @endphp
+
                                 <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-bell fa-fw"></i>
+                                    <i class="fas fa-bell fa-lg fa-fw text-dark"></i>
                                     <!-- Counter - Alerts -->
-                                    <span class="badge badge-danger badge-counter">3+</span>
+                                    <span
+                                        class="badge badge-danger badge-counter">{{ session('order_req') > 0 ? '1+' : '' }}</span>
                                 </a>
                                 <!-- Dropdown - Alerts -->
                                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="alertsDropdown">
-                                    <h6 class="dropdown-header">
-                                        Alerts Center
+                                    <h6 class="dropdown-header " style="background-color: #272726f1">
+                                        Notification Center
                                     </h6>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-primary">
-                                                <i class="fas fa-file-alt text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">December 12, 2019</div>
-                                            <span class="font-weight-bold">A new monthly report is ready to
-                                                download!</span>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-success">
-                                                <i class="fas fa-donate text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">December 7, 2019</div>
-                                            $290.29 has been deposited into your account!
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-warning">
-                                                <i class="fas fa-exclamation-triangle text-white"></i>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">December 2, 2019</div>
-                                            Spending Alert: We've noticed unusually high spending for your account.
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item text-center small text-gray-500" href="#">Show All
-                                        Alerts</a>
-                                </div>
-                            </li>
 
-                            <!-- Nav Item - Messages -->
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-envelope fa-fw"></i>
-                                    <!-- Counter - Messages -->
-                                    <span class="badge badge-danger badge-counter">7</span>
-                                </a>
-                                <!-- Dropdown - Messages -->
-                                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                    aria-labelledby="messagesDropdown">
-                                    <h6 class="dropdown-header">
-                                        Message Center
-                                    </h6>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="/img/undraw_profile_1.svg" alt="...">
-                                            <div class="status-indicator bg-success"></div>
-                                        </div>
-                                        <div class="font-weight-bold">
-                                            <div class="text-truncate">Hi there! I am wondering if you can help me with
-                                                a
-                                                problem I've been having.</div>
-                                            <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="/img/undraw_profile_2.svg" alt="...">
-                                            <div class="status-indicator"></div>
-                                        </div>
-                                        <div>
-                                            <div class="text-truncate">I have the photos that you ordered last month,
-                                                how
-                                                would you like them sent to you?</div>
-                                            <div class="small text-gray-500">Jae Chun · 1d</div>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="/img/undraw_profile_3.svg" alt="...">
-                                            <div class="status-indicator bg-warning"></div>
-                                        </div>
-                                        <div>
-                                            <div class="text-truncate">Last month's report looks great, I am very happy
-                                                with
-                                                the progress so far, keep up the good work!</div>
-                                            <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle"
-                                                src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="...">
-                                            <div class="status-indicator bg-success"></div>
-                                        </div>
-                                        <div>
-                                            <div class="text-truncate">Am I a good boy? The reason I ask is because
-                                                someone
-                                                told me that people say this to all dogs, even if they aren't good...
+                                    @if (session('order_req') > 0)
+                                        <a class="dropdown-item d-flex align-items-center"
+                                            href={{ Auth::user()->role_id == Role::$SUPER_ADMIN ? route('dashboard_roles') : route('order.index') }}>
+                                            <div class="mr-3">
+                                                <div
+                                                    class="icon-circle {{ Auth::user()->role_id == Role::$SUPER_ADMIN ? 'bg-success' : 'bg-primary' }}">
+                                                    <i class="fas fa-store text-white"></i>
+                                                </div>
                                             </div>
-                                            <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item text-center small text-gray-500" href="#">Read More
-                                        Messages</a>
+
+                                            <div>
+                                                @if (Auth::user()->role_id == Role::$SUPER_ADMIN)
+                                                    @if ($no_admin_req > 0)
+                                                        <div class="small text-gray-800">
+                                                            {{ Carbon::parse(date('m.d.y'))->isoFormat('LL') }}</div>
+                                                        <b>{{ $admin_req_first->name }}</b> and
+                                                        <b>{{ $no_admin_req }}</b>
+                                                        others
+                                                        requests to become an
+                                                        Admin.
+                                                    @else
+                                                        <div class="small text-gray-800">
+                                                            {{ Carbon::parse(date('m.d.y'))->isoFormat('LL') }}</div>
+                                                        <b>{{ $admin_req_first->name }}</b> requests to become an Admin.
+                                                    @endif
+                                                @endif
+                                                @if (session('order_req') != null)
+                                                    @if (Auth::user()->role_id == Role::$VENDOR)
+                                                        <div class="small text-gray-800">
+                                                            {{ Carbon::parse(date('m.d.y'))->isoFormat('LL') }}</div>
+                                                        Orders Alert: <b>{{ session('order_req') }}</b> orders are
+                                                        pending
+                                                    @endif
+                                                @endif
+                                            </div>
+                                        </a>
+                                    @else
+                                        <p class="dropdown-item text-center text-gray-700">No Notifications</p>
+                                    @endif
+
+
+                                    <a class="dropdown-item text-center small text-gray-500" href="#">Show All</a>
+
                                 </div>
                             </li>
 
@@ -221,7 +180,8 @@
                                         Home
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <a class="dropdown-item" href="#" data-toggle="modal"
+                                        data-target="#logoutModal">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Logout
                                     </a>
@@ -240,6 +200,7 @@
 
                 </div>
                 <!-- End of Main Content -->
+
 
                 <!-- Footer -->
                 <footer class="sticky-footer bg-white">
@@ -260,6 +221,8 @@
             <i class="fas fa-angle-up"></i>
         </a>
 
+
+
         <!-- Logout Modal-->
         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -277,7 +240,8 @@
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <a class="btn btn-info" :href="route('logout')" onclick="event.preventDefault();
+                            <a class="btn btn-warning" :href="route('logout')"
+                                onclick="event.preventDefault();
                         this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </a>
@@ -287,10 +251,10 @@
             </div>
         </div>
     @else
-        <div>
-            <center>
-                <h5 class="alert alert-danger">Error : 403 - You are not authorized</h5>
-            </center>
+        <div
+            style="background:rgb(43, 43, 58); height:100vh ; 
+                display:grid; place-items:center; align-items:center; ">
+            <h4 class="alert">403 | THIS ACTION IS UNAUTHORIZED.</h4>
         </div>
     @endif
 
@@ -327,6 +291,26 @@
             .catch(error => {
                 console.error(error);
             });
+
+
+        //Toast Notitfication
+
+        const close = document.querySelectorAll('.btn-close');
+        let closeToast = document.querySelectorAll('.tost');
+
+        for (let i = 0; i < close.length; i++) {
+            close[i].addEventListener("click", () => {
+                closeHandler(i);
+            });
+
+            setTimeout(() => {
+                closeHandler(i);
+            }, 8000);
+        }
+
+        const closeHandler = (id) => {
+            closeToast[id].style.display = "none"
+        };
     </script>
     <script>
         ClassicEditor

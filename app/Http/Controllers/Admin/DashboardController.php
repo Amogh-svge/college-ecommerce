@@ -15,11 +15,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        Gate::authorize('create-action');
         $pending = 0;
         $allProducts = 0;
         $total_vendors = 0;
         $users = User::all();
         $pending_orders = 0;
+        $admin_request = null;
+        $first_admin_req = null;
 
         if (Auth::user()->role_id == Role::$SUPER_ADMIN) {
             $allProducts = count(Product::all());
@@ -31,6 +34,8 @@ class DashboardController extends Controller
                     $pending += 1; //total pending request count
                 }
             }
+            $notification_request = User::where('role_checker', 2)->get();
+            $first_notification_req =  User::where('role_checker', 2)->first();
         }
 
         if (Auth::user()->role_id == Role::$VENDOR) {
@@ -40,10 +45,22 @@ class DashboardController extends Controller
                 ->select('orders.*', 'users.*', 'order_Items.*', 'product.*')
                 ->where(['users_id' => Auth::id(), 'order_status' => 'purchased', 'vendor_status' => 'not_approved'])
                 ->get());
+
+            session(['order_req' => $pending_orders]);
+            $notification_request = $pending_orders;
+            $first_notification_req =  User::where('role_checker', 2)->first();
         }
         $total_users = count($users);
         $total_Products = Product::latest()->where('users_id', Auth::id())->get();
-        return view('Admin.dashboard', compact(['total_Products', 'pending', 'allProducts', 'total_vendors', 'total_users', 'pending_orders']));
+
+
+        if (Auth::user()->role_id == Role::$VENDOR || Auth::user()->role_id == Role::$SUPER_ADMIN) {
+        }
+
+        return view('Admin.dashboard', compact([
+            'total_Products', 'pending', 'allProducts', 'total_vendors',
+            'total_users', 'pending_orders', 'notification_request', 'first_notification_req'
+        ]));
     }
 
 
@@ -96,5 +113,10 @@ class DashboardController extends Controller
             return redirect(route('dashboard_roles'))->with('success', 'User Deleted Successfully ');
         }
         return redirect(route('dashboard_roles'))->with('failure', 'Failed to Delete User');
+    }
+
+    public function dummy()
+    {
+        return view('Admin.dummy');
     }
 }

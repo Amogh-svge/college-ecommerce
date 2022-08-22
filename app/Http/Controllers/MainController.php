@@ -38,7 +38,7 @@ class MainController extends Controller
         $cat_id = Categories::find($id);
         $LatestProducts = product::latest()->limit(5)->get();
         $AllProducts = product::where(['category_id' => $id])->paginate(5);
-        $categories = categories::with('productReturner')->get();
+        $categories = categories::get();
         return view('categories', compact(['cat_id', 'AllProducts', 'LatestProducts', 'categories']));
     }
 
@@ -46,7 +46,7 @@ class MainController extends Controller
     {
         $allCategories = Categories::all();
         $LatestProducts = product::latest()->limit(5)->get();
-        $categories = categories::with('productReturner')->get();
+        $categories = categories::get();
         return view('all-categories', compact(['LatestProducts', 'allCategories', 'categories']));
     }
 
@@ -92,7 +92,7 @@ class MainController extends Controller
 
     public function displayShop() // All shop items displayed
     {
-        $categories = categories::with('productReturner')->get();
+        $categories = categories::get();
         $allProducts = product::latest()->with('categ')->paginate('9');
         $LatestProducts = product::latest()->limit(5)->get();
         return view('shop', compact(['LatestProducts', 'allProducts', 'categories']));
@@ -100,10 +100,9 @@ class MainController extends Controller
 
     public function displayStatement() // All order statements displayed
     {
-        $orders = Order::with('orderItem')->where(['user_id' => Auth::id(), 'order_status' => 'purchased'])->get();
-        // foreach ($orders->orderItem as $item) {
-        //     return $item->product->prod_name . "</br>";
-        // }
+        $orders = Order::with('orderItem')
+            ->where(['user_id' => Auth::id(), 'order_status' => 'purchased'])
+            ->get();
 
         return view('statement', compact(['orders']));
     }

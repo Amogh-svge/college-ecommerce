@@ -49,8 +49,7 @@
                                     <td>{{ $item->role }}</td>
                                     <td>{{ strip_tags(substr($item->description, 0, 60)) }}...</td>
                                     <td> {{ Carbon::parse($item->created_at)->isoFormat('LL') }}</td>
-                                    <td><a href={{ route('roles.edit', [$item->id]) }}><i
-                                                class="fas fa-edit mr-1"></i></a>
+                                    <td><a href={{ route('roles.edit', [$item->id]) }}><i class="fas fa-edit mr-1"></i></a>
                                     </td>
                                     <td>
                                         <form action={{ route('roles.destroy', $item->id) }} method="POST">
@@ -59,7 +58,8 @@
                                             {{-- <button type="submit" class="btn btn-light btn-sm btn-svg-icon">
                                                 <i class="fas fa-trash ml-1"></i>
                                             </button> --}}
-                                            <a onclick="event.preventDefault();   this.closest('form').submit();"
+                                            <a onclick="event.preventDefault();  
+                                            window.confirm('Do you want to delete?')===true && this.closest('form').submit();"
                                                 href={{ route('roles.destroy', $item->id) }}><i
                                                     class="fas fa-trash ml-1"></i></a>
                                         </form>

@@ -144,7 +144,7 @@
                                         <tfoot class="checkout__totals-footer">
                                             <tr>
                                                 <th>Total</th>
-                                                <td>Rs.{{ $item->total_price }}</td>
+                                                <td>Rs. {{ $item->total_price }}</td>
                                             </tr>
                                         </tfoot>
                                     </table>

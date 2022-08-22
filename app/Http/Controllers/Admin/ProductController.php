@@ -33,6 +33,7 @@ class ProductController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create-action');
         $categories = Categories::all();
         return view('Admin.Products.create', compact('categories'));
     }
@@ -45,6 +46,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+       
         $validated = $request->validate([
             'prod_name' => 'required|min:5|unique:Product',
             'price' => 'required',

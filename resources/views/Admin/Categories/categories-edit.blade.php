@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="form-group mt-4">
-                        <input type="submit" value="Update Products" class="btn btn-primary m-2">
+                        <input type="submit" value="Update Products" class="btn btn-warning m-2">
                         <input type="reset" value="Clear" class="btn btn-secondary ">
                     </div>
                 </form>

@@ -11,8 +11,8 @@
                                     width="6px" height="9px">
                                     <use xlink:href="/images/sprite.svg#arrow-rounded-right-6x9"></use>
                                 </svg></li>
-                            <li class="breadcrumb-item active">{{ $searchVal }} <svg class="breadcrumb-arrow" width="6px"
-                                    height="9px">
+                            <li class="breadcrumb-item active">{{ $searchVal }} <svg class="breadcrumb-arrow"
+                                    width="6px" height="9px">
                                 </svg></li>
 
                         </ol>
@@ -60,7 +60,8 @@
                                                 <div class="product-card__badges-list">
                                                     <div class="product-card__badge product-card__badge--new">New</div>
                                                 </div>
-                                                <div class="product-card__image"><a href="product.html"><img
+                                                <div class="product-card__image"><a
+                                                        href="/products/{{ $item->id }}"><img
                                                             src="{{ asset('storage/images/thumbnails/' . $item->image) }}"
                                                             alt="no-image"></a></div>
                                                 <div class="product-card__info">
@@ -71,7 +72,12 @@
                                                             @endif
                                                         </a>
                                                     </div>
+                                                    <div class="product-card__category">
+                                                        <a
+                                                            href="/categories/{{ $item->category_id }}"><b>{{ ucwords($item->categ->name) }}</b></a>
+                                                    </div>
                                                 </div>
+
                                                 <div class="product-card__actions">
                                                     <div class="product-card__prices">Rs. {{ $item->price }}</div>
                                                     <div class="product-card__buttons">
@@ -79,9 +85,9 @@
                                                             @csrf
                                                             <input type="hidden" name="product_id"
                                                                 value="{{ $item->id }}">
-                                                            <input type="hidden" name="quantity" value="2">
-                                                            <a class="btn btn-primary product-card__addtocart" type="button"
-                                                                href="#"
+                                                            <input type="hidden" name="quantity" value="1">
+                                                            <a class="btn btn-primary product-card__addtocart"
+                                                                type="button" href="#"
                                                                 onclick="event.preventDefault(); this.closest('form').submit();">
                                                                 Add To Cart
                                                             </a>

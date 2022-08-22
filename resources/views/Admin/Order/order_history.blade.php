@@ -12,7 +12,7 @@
                 <h5 class="m-0 font-weight-bold text-primary">Orders</h5>
                 @if ($message = Session::get('success'))
                     <h6 class=" mt-3 text-success">{{ $message }}</h6>
-                @else   
+                @else
                     @php
                         $message = Session::get('failure');
                     @endphp
@@ -25,9 +25,8 @@
                         <div class="card shadow mb-4">
                             <!-- Card Header - Accordion -->
                             <a href="#collapseCardExample{{ $key }}"
-                                class="d-flex justify-content-xl-between card-header py-3 bg-gradient-primary"
-                                data-toggle="collapse" role="button" aria-expanded="true"
-                                aria-controls="collapseCardExample{{ $key }}">
+                                class="d-flex justify-content-xl-between card-header" style="background:rgb(201, 201, 201);" data-toggle="collapse"
+                                role="button" aria-expanded="true" aria-controls="collapseCardExample{{ $key }}">
                                 <?php
                                 $total_order_price = 0;
                                 foreach ($item as $object) {
@@ -39,19 +38,19 @@
 
                                 @foreach ($item as $order)
                                     @if ($order->id == $key)
-                                        <h6 class="m-0 font-weight-bold text-light"> #{{ $order->id }}</h6>
-                                        <h6 class="m-0 font-weight-bold text-light"> User-id: {{ $order->id }}</h6>
-                                        <h6 class="m-0 font-weight-bold text-light">
+                                        <h6 class="m-0 font-weight-bold text-dark"> #{{ $order->id }}</h6>
+                                        <h6 class="m-0 font-weight-bold text-dark"> User-id: {{ $order->id }}</h6>
+                                        <h6 class="m-0 font-weight-bold text-dark">
                                             {{ Carbon::parse($order->product->created_at)->format('M d Y') }}</h6>
                                         @if ($order->vendor_status == 'not_approved')
-                                            <h6 class="m-0 font-weight-bold text-light">Status: Not Delivered
+                                            <h6 class="m-0 font-weight-bold text-dark">Status: Not Delivered
                                             </h6>
                                         @else
-                                            <h6 class="m-0 font-weight-bold text-light">Status: Delivered
+                                            <h6 class="m-0 font-weight-bold text-dark">Status: Delivered
                                             </h6>
                                         @endif
 
-                                        <h6 class="m-0 font-weight-bold text-light">Total: Rs. {{ $total_order_price }}
+                                        <h6 class="m-0 font-weight-bold text-dark">Total: Rs. {{ $total_order_price }}
                                         </h6>
                                         <?php break; ?>
                                     @endif

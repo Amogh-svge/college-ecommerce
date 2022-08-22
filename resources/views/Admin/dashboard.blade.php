@@ -1,3 +1,6 @@
+@php
+use App\Models\Role;
+@endphp
 @extends('Admin/dashboard_layout')
 @section('content')
     <!-- Begin Page Content -->
@@ -141,13 +144,13 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             @if (Auth::user()->role_id == 3)
-                                <a href={{ route('dashboard_roles') }} class="col mr-2">
+                                <a href={{ route('dashboard_roles') }} class="col mr-2 ">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                         Pending Requests</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $pending }}</div>
                                 </a>
                             @else
-                                <a href={{route('order.index')}} class="col mr-2">
+                                <a href={{ route('order.index') }} class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                         Pending Orders</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $pending_orders }}</div>
@@ -194,4 +197,50 @@
         </div>
     </div>
     <!-- /.container-fluid -->
+
+    <!--Toast Notification Message-->
+    @if ($notification_request != null)
+        <div class="tost_container">
+            <div class="tost">
+                <div class="tost-header">
+                    <span class="tost-header__dot">&nbsp;</span>
+                    <strong class="">Notification</strong>
+                    <button type="button" class="btn-close">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="tost-body">
+
+                    @if (Auth::user()->role_id == Role::$SUPER_ADMIN)
+                        @php
+                            // -1 because one user name is already shown in notification.
+                            $notification_req_no = count($notification_request) - 1;
+                        @endphp
+                        @if ($notification_req_no > 0)
+                            <a class="text-dark text-decoration-none" href="{{ route('dashboard_roles') }}">
+                                <b>{{ $first_notification_req->name }}</b> and <b>{{ $notification_req_no }}</b> others
+                                requests to become an
+                                Admin.
+                            </a>
+                        @else
+                            <a class="text-dark text-decoration-none" href="{{ route('dashboard_roles') }}">
+                                <b>{{ $first_notification_req->name }}</b> requests to become an
+                                Admin.
+                            </a>
+                        @endif
+                    @endif
+
+                    @if (Auth::user()->role_id == Role::$VENDOR)
+                        @if ($notification_request > 0)
+                            <a class="text-dark text-decoration-none" href={{ route('order.index') }}>
+                                <i class="fas fa-clipboard-list fa-lg text-dark pr-1"></i>
+                                <big class="font-weight-bold">{{ $notification_request }}</big> orders have been placed.
+                            </a>
+                        @endif
+                    @endif
+                </div>
+            </div>
+        </div>
+    @endif
+
 @endsection
